@@ -14,6 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $poll->post();
 }
 
+$err = $poll->getError();
+
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -23,6 +25,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <?php if (isset($err)) : ?>
+  <div class="error"><?= h($err); ?></div>
+  <?php endif; ?>
   <h1>Which do you like best?</h1>
   <form action="" method="post">
     <div class="row">
@@ -51,6 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $('form').submit();
       }
     });
+
+    $('.error').fadeOut(3000);
 
   });
   </script>
