@@ -63,6 +63,13 @@ class Poll {
   }
 
   private function _save() {
+    $sql = "insert into answers
+            (answer, created)
+            values (:answer, now())";
+    $stmt = $this->_db->prepare($sql);
+    $stmt->bindValue(':answer', (int)$_POST['answer'], \PDO::PARAM_INT);
+    $stmt->execute();
+    // exit;
   }
 
   private function _connectDB() {
