@@ -7,17 +7,35 @@ class Poll {
 
   public function __construct() {
     $this->_connectDB();
+    $this->_createToken();
+  }
+
+  private function _createToken() {
+    if (!isset($_SESSION['token'])) {
+      $_SESSION['token'] = bin2hex(openssl_random_pseudo_bytes(16));
+    }
+  }
+
+  private function _validateToken() {
+    if (
+      !isset($_SESSION['token']) ||
+      !isset($_POST['token']) ||
+      $_SESSION['token'] !== $_POST['token']
+    ) {
+      throw new \Exception('invalid token!');
+    }
   }
 
   public function post() {
     try {
+      $this->_validateToken();
       $this->_validateAnswer();
       $this->_save();
       // redirect to result.php
       header('Location: http://' . $_SERVER['HTTP_HOST'] . '/result.php');
     } catch (\Exception $e) {
       // set error
-      $_SESSION['err'] = $e ->getMessage();
+      $_SESSION['err'] = $e->getMessage();
       // redirect to index.php
       header('Location: http://' . $_SERVER['HTTP_HOST']);
     }
@@ -42,7 +60,6 @@ class Poll {
     ) {
       throw new \Exception('invalid answer!');
     }
-
   }
 
   private function _save() {
