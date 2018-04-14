@@ -10,11 +10,15 @@ try {
   exit;
 }
 
-$results = [
-  0 => 12,
-  1 => 32,
-  2 => 44
-];
+$results = $poll->getResults();
+// var_dump($results);
+// exit;
+
+// $results = [
+//   0 => 12,
+//   1 => 32,
+//   2 => 44
+// ];
 
 ?>
 <!DOCTYPE html>
